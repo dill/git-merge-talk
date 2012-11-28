@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <link rel="stylesheet" type="text/css" media="screen, projection, print"
+    href="http://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css" />
+  <script src="http://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js.gz"
+    charset="utf-8" type="text/javascript"></script>
+</head>
+<body>
+<div class="section slide level1" id="eats-squishes-and-trees">
+<h1>eats, squishes and trees</h1>
+<p><code>fork</code>ing, <code>merge</code>ing and <code>branch</code>ing in <code>git</code></p>
+<p>David L. Miller (University of Rhode Island)</p>
+<p>St Andrews R user group talk</p>
+<p>20 December 2012</p>
+</div>
+<div class="section slide level1" id="outline">
+<h1>outline</h1>
+<ul class="incremental">
+<li><code>git</code> re-cap</li>
+<li>branches (and how to think about them)</li>
+<li>merging</li>
+<li>deleting branches</li>
+<li><code>stash</code>ing</li>
+</ul>
+</div>
+<div class="section slide level1" id="re-cap">
+<h1>re-cap</h1>
+<p>let’s start with a fresh <code>git</code> repo</p>
+<pre><code>$ mkdir ex
+$ cd ex
+$ git init
+$ touch README
+$ git add README
+$ git commit -a -m &quot;frivolous commit&quot;</code></pre>
+</div>
+<div class="section slide level1" id="branches">
+<h1>branches</h1>
+<ul class="incremental">
+<li>think about contexts!</li>
+<li>want to test some code but not screw things up?</li>
+<li>also useful to save results of different models</li>
+</ul>
+</div>
+<div class="section slide level1" id="branch-example-1">
+<h1>branch example (1)</h1>
+<p>Let’s make a file called <code>row.max.R</code>:</p>
+<pre><code># find the maximum in each row of a matrix -- slowly
+row.max &lt;- function(x){
+
+  result &lt;- c()
+
+  for(i in 1:nrow(x)){
+    this.min &lt;- max(x[i,])
+    result &lt;- c(result, this.min)
+  }
+  return(result)
+}</code></pre>
+</div>
+<div class="section slide level1" id="branch-example-2">
+<h1>branch example (2)</h1>
+<p>This does what you expect</p>
+<pre><code>&gt; source(&quot;row.max.R&quot;)
+&gt; row.max(matrix(1:9,3,3))
+[1] 7 8 9</code></pre>
+<p>Yay! It works!</p>
+<pre><code>$ git add row.max.R
+$ git commit -a -m &quot;this is an amazing function, Brian Ripley would be proud&quot;</code></pre>
+</div>
+<div class="section slide level1" id="branch-example-3">
+<h1>branch example (3)</h1>
+<ul class="incremental">
+<li>But wait, I heard about this thing called <code>apply()</code>…</li>
+<li>What if that’s better?</li>
+<li>How do I try that out without angering other people on my project?</li>
+<li><code>branch</code>!</li>
+</ul>
+</div>
+<div class="section slide level1" id="branch-example-4">
+<h1>branch example (4)</h1>
+<p>First make a new branch and switch to it:</p>
+<pre><code>$ git branch apply
+$ git checkout apply
+Switched to branch &#39;apply&#39;</code></pre>
+<p>You can check which branch we’re on using:</p>
+<pre><code>$ git branch
+* apply
+  master</code></pre>
+</div>
+<div class="section slide level1" id="branch-example-5">
+<h1>branch example (5)</h1>
+<p>Change the code:</p>
+<pre><code># find the maximum in each row of a matrix
+row.max &lt;- function(x){
+  return(apply(x,1,max))
+}</code></pre>
+<p>Try it:</p>
+<pre><code>&gt; source(&quot;row.max.R&quot;)
+&gt; row.max(matrix(1:9,3,3))
+[1] 7 8 9</code></pre>
+<p>Hurrah!</p>
+</div>
+<div class="section slide level1" id="branch-example-5-1">
+<h1>branch example (5)</h1>
+<p>Now, we can commit our changes to this branch <code>$ git commit -a -m &quot;now we use apply(), this is much better&quot;</code></p>
+<p>we can switch back and forth between the branches and check where we are:</p>
+<pre><code>$ git checkout master
+$ git branch
+* master
+  apply
+$ git checkout apply
+$ git branch
+  master
+* apply</code></pre>
+</div>
+<div class="section slide level1" id="branching---when-is-it-useful">
+<h1>branching - when is it useful?</h1>
+<ul class="incremental">
+<li>multiple sim results</li>
+<li>want to check different parameter values</li>
+</ul>
+</div>
+<div class="section slide level1" id="merging-easy">
+<h1>merging – easy</h1>
+<p>say we prefer <code>apply</code>, how do we make that our new <code>master</code>?</p>
+<pre><code>git checkout apply
+git merge --strategy=ours master 
+git checkout master
+git merge apply</code></pre>
+</div>
+<div class="section slide level1" id="merging-hard">
+<h1>merging – hard</h1>
+<p>what if there were other changes?</p>
+</div>
+<div class="section slide level1" id="deleting-branches">
+<h1>deleting branches</h1>
+<p>To remove a local branch from your machine:</p>
+<pre><code>git branch -d the_local_branch</code></pre>
+<p>To remove a remote branch:</p>
+<pre><code>git push origin :the_remote_branch</code></pre>
+</div>
+<div class="section slide level1" id="committing-branches-back-to-github">
+<h1>committing branches back to github</h1>
+</div>
+<div class="section slide level1" id="forking">
+<h1>forking</h1>
+<ul class="incremental">
+<li>instead of branching, if you don’t have write access</li>
+<li>“fork it”</li>
+<li>makes a copy of the repo</li>
+<li>then use a “pull request” to merge</li>
+<li>all handled by github</li>
+</ul>
+</div>
+<div class="section slide level1" id="git-stash-for-quick-storage">
+<h1><code>git stash</code> for quick storage</h1>
+</div>
+</body>
+</html>
