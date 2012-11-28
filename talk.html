@@ -13,9 +13,8 @@
     charset="utf-8" type="text/javascript"></script>
 </head>
 <body>
-<div class="section slide level1" id="eats-squishes-and-trees">
-<h1>eats, squishes and trees</h1>
-<p><code>fork</code>ing, <code>merge</code>ing and <code>branch</code>ing in <code>git</code></p>
+<div class="section slide level1" id="fork-ing-merge-ing-and-branch-ing-in-git">
+<h1><code>fork</code>-ing, <code>merge</code>-ing and <code>branch</code>-ing in <code>git</code></h1>
 <p>David L. Miller (University of Rhode Island)</p>
 <p>St Andrews R user group talk</p>
 <p>20 December 2012</p>
@@ -108,7 +107,8 @@ row.max &lt;- function(x){
 </div>
 <div class="section slide level1" id="branch-example-5-1">
 <h1>branch example (5)</h1>
-<p>Now, we can commit our changes to this branch <code>$ git commit -a -m &quot;now we use apply(), this is much better&quot;</code></p>
+<p>Now, we can commit our changes to this branch</p>
+<pre><code>$ git commit -a -m &quot;now we use apply(), this is much better&quot;</code></pre>
 <p>we can switch back and forth between the branches and check where we are:</p>
 <pre><code>$ git checkout master
 $ git branch
@@ -130,7 +130,7 @@ $ git branch
 <h1>merging – easy</h1>
 <p>say we prefer <code>apply</code>, how do we make that our new <code>master</code>?</p>
 <pre><code>git checkout apply
-git merge --strategy=ours master 
+git merge --strategy=ours master
 git checkout master
 git merge apply</code></pre>
 </div>

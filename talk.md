@@ -1,7 +1,6 @@
-eats, squishes and trees
-========================
+`fork`-ing, `merge`-ing and `branch`-ing in `git`
+=================================================
 
-`fork`ing, `merge`ing and `branch`ing in `git`
 
 David L. Miller (University of Rhode Island)
 
