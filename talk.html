@@ -29,6 +29,14 @@
 <li><code>stash</code>ing</li>
 </ul>
 </div>
+<div class="section slide level1" id="why-git">
+<h1>why <code>git</code>?</h1>
+<ul class="incremental">
+<li><code>git</code> is the Delorean from <em>Back to the Future</em></li>
+<li>time travel is possible (no roads required)</li>
+<li><code>&lt;&lt;extended metaphor&gt;&gt;</code> <img src="delorean.jpg" /></li>
+</ul>
+</div>
 <div class="section slide level1" id="re-cap">
 <h1>re-cap</h1>
 <p>let’s start with a fresh <code>git</code> repo</p>
@@ -39,12 +47,16 @@ $ touch README
 $ git add README
 $ git commit -a -m &quot;frivolous commit&quot;</code></pre>
 </div>
-<div class="section slide level1" id="branches">
-<h1>branches</h1>
+<div class="section slide level1" id="why-branches">
+<h1>why branches?</h1>
 <ul class="incremental">
-<li>think about contexts!</li>
-<li>want to test some code but not screw things up?</li>
-<li>also useful to save results of different models</li>
+<li>contexts!</li>
+<li>want to test some code but not screw other things up?</li>
+<li>save results from different parameters
+<div align="center">
+<img src="doc.jpeg">
+</div>
+</li>
 </ul>
 </div>
 <div class="section slide level1" id="branch-example-1">
@@ -56,8 +68,8 @@ row.max &lt;- function(x){
   result &lt;- c()
 
   for(i in 1:nrow(x)){
-    this.min &lt;- max(x[i,])
-    result &lt;- c(result, this.min)
+    this.max &lt;- max(x[i,])
+    result &lt;- c(result, this.max)
   }
   return(result)
 }</code></pre>
@@ -70,7 +82,7 @@ row.max &lt;- function(x){
 [1] 7 8 9</code></pre>
 <p>Yay! It works!</p>
 <pre><code>$ git add row.max.R
-$ git commit -a -m &quot;this is an amazing function, Brian Ripley would be proud&quot;</code></pre>
+$ git commit -a -m &quot;Brian Ripley would be proud&quot;</code></pre>
 </div>
 <div class="section slide level1" id="branch-example-3">
 <h1>branch example (3)</h1>
@@ -124,15 +136,33 @@ $ git branch
 <ul class="incremental">
 <li>multiple sim results</li>
 <li>want to check different parameter values</li>
+<li>need to be careful with results if you want to access them all at once
+<div align="center">
+<img src="still-of-christopher-lloyd-in-back-to-the-future-part-ii.jpg" height=50%>
+</div>
+</li>
 </ul>
+</div>
+<div class="section slide level1" id="i-started-this-but-i-hate-it">
+<h1>I started this, but I hate it</h1>
+<p>nuke everything that’s not committed</p>
+<pre><code>$ git reset --hard HEAD</code></pre>
+<p>(this works anytime, but be careful!)</p>
+</div>
+<div class="section slide level1" id="merging-very-easy">
+<h1>merging – very easy</h1>
+<p>say we prefer <code>apply</code>, how do we make that our new <code>master</code>?</p>
+<pre><code>$ git checkout apply
+$ git merge --strategy=ours master
+$ git checkout master
+$ git merge apply</code></pre>
 </div>
 <div class="section slide level1" id="merging-easy">
 <h1>merging – easy</h1>
-<p>say we prefer <code>apply</code>, how do we make that our new <code>master</code>?</p>
-<pre><code>git checkout apply
-git merge --strategy=ours master
-git checkout master
-git merge apply</code></pre>
+<p>if changes are disjoint we <em>fast-forward</em></p>
+<pre><code>$ git commit -a -m &quot;some changes&quot;
+$ git checkout master
+$ git merge apply</code></pre>
 </div>
 <div class="section slide level1" id="merging-hard">
 <h1>merging – hard</h1>
@@ -142,24 +172,56 @@ git merge apply</code></pre>
 <h1>deleting branches</h1>
 <p>To remove a local branch from your machine:</p>
 <pre><code>git branch -d the_local_branch</code></pre>
-<p>To remove a remote branch:</p>
-<pre><code>git push origin :the_remote_branch</code></pre>
+<div align="center">
+<img src="Lot65_bttf_marty_dave_linda_photo.jpg" height=50%>
 </div>
-<div class="section slide level1" id="committing-branches-back-to-github">
-<h1>committing branches back to github</h1>
+
+
+</div>
+<div class="section slide level1" id="remember-all-changes-are-local">
+<h1>remember: all changes are local</h1>
+<p>push your new branch back to github</p>
+<pre><code>$ git push origin apply</code></pre>
+<p>remove a remote branch:</p>
+<pre><code>git push origin :the_remote_branch</code></pre>
 </div>
 <div class="section slide level1" id="forking">
 <h1>forking</h1>
 <ul class="incremental">
 <li>instead of branching, if you don’t have write access</li>
 <li>“fork it”</li>
-<li>makes a copy of the repo</li>
+<li>copies repo to your github repos</li>
 <li>then use a “pull request” to merge</li>
 <li>all handled by github</li>
 </ul>
 </div>
 <div class="section slide level1" id="git-stash-for-quick-storage">
 <h1><code>git stash</code> for quick storage</h1>
+<ul class="incremental">
+<li>say you’re working</li>
+<li>need to do something else but don’t want to commit</li>
+<li><code>stash</code> then come back to it</li>
+<li><code>HEAD</code> goes back to the last commit</li>
+</ul>
+</div>
+<div class="section slide level1" id="stash-example">
+<h1><code>stash</code> example</h1>
+<pre><code>$ git stash save &quot;work in progress&quot;
+# work on something else
+$ git commit -a -m &quot;fixed!&quot;
+$ git stash pop
+# back to where we were</code></pre>
+</div>
+<div class="section slide level1" id="end">
+<h1>end</h1>
+<div class="background" bgcolor="black">
+<img src="back-to-the-future-DeLorean.jpg" width=100%>
+</div>
+
+
+
+
+
 </div>
 </body>
 </html>

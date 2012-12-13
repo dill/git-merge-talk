@@ -13,6 +13,7 @@
     \usepackage[utf8]{inputenc}
   \fi
 \fi
+\usepackage{graphicx}
 % Comment these out if you don't want a slide with just the
 % part/section/subsection/subsubsection title:
 \AtBeginPart{\frame{\partpage}}
@@ -55,6 +56,20 @@ St Andrews R user group talk
 
 \end{frame}
 
+\begin{frame}[fragile]\frametitle{why \texttt{git}?}
+
+\begin{itemize}[<+->]
+\item
+  \texttt{git} is the Delorean from \emph{Back to the Future}
+\item
+  time travel is possible (no roads required)
+\item
+  \texttt{\textless{}\textless{}extended metaphor\textgreater{}\textgreater{}}
+  \includegraphics{delorean.jpg}
+\end{itemize}
+
+\end{frame}
+
 \begin{frame}[fragile]\frametitle{re-cap}
 
 let's start with a fresh \texttt{git} repo
@@ -70,15 +85,15 @@ $ git commit -a -m "frivolous commit"
 
 \end{frame}
 
-\begin{frame}\frametitle{branches}
+\begin{frame}\frametitle{why branches?}
 
 \begin{itemize}[<+->]
 \item
-  think about contexts!
+  contexts!
 \item
-  want to test some code but not screw things up?
+  want to test some code but not screw other things up?
 \item
-  also useful to save results of different models
+  save results from different parameters
 \end{itemize}
 
 \end{frame}
@@ -94,8 +109,8 @@ row.max <- function(x){
   result <- c()
 
   for(i in 1:nrow(x)){
-    this.min <- max(x[i,])
-    result <- c(result, this.min)
+    this.max <- max(x[i,])
+    result <- c(result, this.max)
   }
   return(result)
 }
@@ -117,7 +132,7 @@ Yay! It works!
 
 \begin{verbatim}
 $ git add row.max.R
-$ git commit -a -m "this is an amazing function, Brian Ripley would be proud"
+$ git commit -a -m "Brian Ripley would be proud"
 \end{verbatim}
 
 \end{frame}
@@ -211,20 +226,46 @@ $ git branch
   multiple sim results
 \item
   want to check different parameter values
+\item
+  need to be careful with results if you want to access them all at once
 \end{itemize}
 
 \end{frame}
 
-\begin{frame}[fragile]\frametitle{merging -- easy}
+\begin{frame}[fragile]\frametitle{I started this, but I hate it}
+
+nuke everything that's not committed
+
+\begin{verbatim}
+$ git reset --hard HEAD
+\end{verbatim}
+
+(this works anytime, but be careful!)
+
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{merging -- very easy}
 
 say we prefer \texttt{apply}, how do we make that our new
 \texttt{master}?
 
 \begin{verbatim}
-git checkout apply
-git merge --strategy=ours master
-git checkout master
-git merge apply
+$ git checkout apply
+$ git merge --strategy=ours master
+$ git checkout master
+$ git merge apply
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{merging -- easy}
+
+if changes are disjoint we \emph{fast-forward}
+
+\begin{verbatim}
+$ git commit -a -m "some changes"
+$ git checkout master
+$ git merge apply
 \end{verbatim}
 
 \end{frame}
@@ -243,15 +284,21 @@ To remove a local branch from your machine:
 git branch -d the_local_branch
 \end{verbatim}
 
-To remove a remote branch:
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{remember: all changes are local}
+
+push your new branch back to github
+
+\begin{verbatim}
+$ git push origin apply
+\end{verbatim}
+
+remove a remote branch:
 
 \begin{verbatim}
 git push origin :the_remote_branch
 \end{verbatim}
-
-\end{frame}
-
-\begin{frame}\frametitle{committing branches back to github}
 
 \end{frame}
 
@@ -263,7 +310,7 @@ git push origin :the_remote_branch
 \item
   ``fork it''
 \item
-  makes a copy of the repo
+  copies repo to your github repos
 \item
   then use a ``pull request'' to merge
 \item
@@ -272,7 +319,34 @@ git push origin :the_remote_branch
 
 \end{frame}
 
-\begin{frame}\frametitle{\texttt{git stash} for quick storage}
+\begin{frame}[fragile]\frametitle{\texttt{git stash} for quick storage}
+
+\begin{itemize}[<+->]
+\item
+  say you're working
+\item
+  need to do something else but don't want to commit
+\item
+  \texttt{stash} then come back to it
+\item
+  \texttt{HEAD} goes back to the last commit
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{\texttt{stash} example}
+
+\begin{verbatim}
+$ git stash save "work in progress"
+# work on something else
+$ git commit -a -m "fixed!"
+$ git stash pop
+# back to where we were
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}\frametitle{end}
 
 \end{frame}
 

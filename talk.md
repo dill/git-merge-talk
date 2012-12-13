@@ -1,13 +1,11 @@
 `fork`-ing, `merge`-ing and `branch`-ing in `git`
 =================================================
 
-
 David L. Miller (University of Rhode Island)
 
 St Andrews R user group talk
 
 20 December 2012
-
 
 # outline
 
@@ -16,6 +14,13 @@ St Andrews R user group talk
  * merging
  * deleting branches
  * `stash`ing
+
+# why `git`?
+
+ * `git` is the Delorean from *Back to the Future*
+ * time travel is possible (no roads required)
+ * `<<extended metaphor>>`
+![](delorean.jpg)
 
 # re-cap
  let's start with a fresh `git` repo
@@ -29,11 +34,11 @@ $ git add README
 $ git commit -a -m "frivolous commit"
 ```
 
-# branches
- - think about contexts!
- - want to test some code but not screw things up?
- - also useful to save results of different models
-
+# why branches?
+ - contexts!
+ - want to test some code but not screw other things up?
+ - save results from different parameters
+ <div align="center"><img src="doc.jpeg"></div>
 
 # branch example (1)
 
@@ -46,8 +51,8 @@ row.max <- function(x){
   result <- c()
 
   for(i in 1:nrow(x)){
-    this.min <- max(x[i,])
-    result <- c(result, this.min)
+    this.max <- max(x[i,])
+    result <- c(result, this.max)
   }
   return(result)
 }
@@ -68,7 +73,7 @@ Yay! It works!
 
 ```
 $ git add row.max.R
-$ git commit -a -m "this is an amazing function, Brian Ripley would be proud"
+$ git commit -a -m "Brian Ripley would be proud"
 ```
 
 # branch example (3)
@@ -142,51 +147,102 @@ $ git branch
 # branching - when is it useful?
  * multiple sim results
  * want to check different parameter values
+ * need to be careful with results if you want to access them all at once
+ <div align="center"><img src="still-of-christopher-lloyd-in-back-to-the-future-part-ii.jpg" height=50%></div>
 
+# I started this, but I hate it
 
-# merging -- easy
+nuke everything that's not committed
+
+```
+$ git reset --hard HEAD
+```
+
+(this works anytime, but be careful!)
+
+# merging -- very easy
  say we prefer `apply`, how do we make that our new `master`?
 
 ```
-git checkout apply
-git merge --strategy=ours master
-git checkout master
-git merge apply
+$ git checkout apply
+$ git merge --strategy=ours master
+$ git checkout master
+$ git merge apply
 ```
+
+# merging -- easy
+
+ if changes are disjoint we *fast-forward*
+
+```
+$ git commit -a -m "some changes"
+$ git checkout master
+$ git merge apply
+```
+
 
 # merging -- hard
 
 what if there were other changes?
 
 
+
 # deleting branches
+
  To remove a local branch from your machine:
 
 ```
 git branch -d the_local_branch
 ```
 
- To remove a remote branch:
+<div align="center"><img src="Lot65_bttf_marty_dave_linda_photo.jpg" height=50%></div>
+
+
+# remember: all changes are local
+
+ push your new branch back to github
+
+```
+$ git push origin apply
+```
+
+ remove a remote branch:
 
 ```
 git push origin :the_remote_branch
 ```
 
-# committing branches back to github
 
 # forking
+
  * instead of branching, if you don't have write access
  * "fork it"
- * makes a copy of the repo
+ * copies repo to your github repos
  * then use a "pull request" to merge
  * all handled by github
 
 
-
-
 # `git stash` for quick storage
 
+ * working on something
+ * need to do something else but don't want to commit
+ * `stash` then come back to it
+ * `HEAD` goes back to the last commit
 
+# `stash` example
+
+```
+$ git stash save "work in progress"
+# work on something else
+$ git commit -a -m "fixed!"
+$ git stash pop
+# back to where we were
+```
+
+
+# end
+
+<div class="background"><img src="back-to-the-future-DeLorean.jpg" width=100%></div>
 
 
 
