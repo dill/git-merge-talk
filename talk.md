@@ -18,7 +18,7 @@ St Andrews R user group talk
 # why `git`?
 
  * `git` is the Delorean from *Back to the Future*
- * time travel is possible (no roads required)
+ * time travel! (no roads required)
  * `<<extended metaphor>>`
 ![](delorean.jpg)
 
@@ -150,7 +150,7 @@ $ git branch
  * need to be careful with results if you want to access them all at once
  <div align="center"><img src="still-of-christopher-lloyd-in-back-to-the-future-part-ii.jpg" height=50%></div>
 
-# I started this, but I hate it
+# (aside) I started this, but I hate it
 
 nuke everything that's not committed
 
@@ -159,6 +159,12 @@ $ git reset --hard HEAD
 ```
 
 (this works anytime, but be careful!)
+
+# I have lots of branches -- what's next?
+
+ <div align="center"><img src="merge-dsm.png" width=100%></div>
+
+
 
 # merging -- very easy
  say we prefer `apply`, how do we make that our new `master`?
